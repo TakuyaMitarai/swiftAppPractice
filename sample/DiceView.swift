@@ -13,9 +13,20 @@ struct DiceView: View {
     
     var body: some View {
         VStack {
-            Image(systemName: "die.face.\(numberOfPips)")
-                .resizable()
-                .frame(width: 100, height: 100)
+            //　ダイスが1なら.accent それ以外なら黒
+            if numberOfPips == 1 {
+                Image(systemName: "die.face.\(numberOfPips).fill")
+                    .resizable()
+                    .frame(maxWidth: 200, maxHeight: 200)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundStyle(.accent, .white)
+            } else {
+                Image(systemName: "die.face.\(numberOfPips).fill")
+                    .resizable()
+                    .frame(maxWidth: 200, maxHeight: 200)
+                    .aspectRatio(1, contentMode: .fit)
+                    .foregroundStyle(.black, .white)
+            }
             
             Button("Roll") {
                 withAnimation {
