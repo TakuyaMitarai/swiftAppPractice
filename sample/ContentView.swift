@@ -8,45 +8,55 @@
 import SwiftUI
 
 
+import SwiftUI
+
+
 struct ContentView: View {
-    @State private var numberOfDice: Int = 1
+    @State private var names: [String] = ["Elisha", "Andre", "Jasmine", "Po-Chun"]
+    @State private var nameToAdd = ""
+    @State private var pickedName = ""
+    @State private var shouldRemovePickedName = false
     
     var body: some View {
         VStack {
-            Text("Dice Roller")
-                .font(.largeTitle.lowercaseSmallCaps())
-                .foregroundStyle(.white)
-            
-            HStack {
-                ForEach(1...numberOfDice, id: \.description) { _ in
-                    DiceView()
+            Text(pickedName.isEmpty ? "" : pickedName)
+            List {
+                ForEach(names, id: \.description) { name in
+                    Text(name)
                 }
             }
+            Text(nameToAdd)
+            TextField("Add Name", text: $nameToAdd)
+                .onSubmit {
+                    if !nameToAdd.isEmpty{
+                        names.append(nameToAdd)
+                        nameToAdd = ""
+                    }
+                }
             
-            HStack {
-                Button("Remove Dice", systemImage: "minus.circle.fill") {
-                    withAnimation {
-                        numberOfDice -= 1
+            Toggle("Remove when picked", isOn: $shouldRemovePickedName)
+            
+            Button {
+                if let randomName = names.randomElement() {
+                    pickedName = randomName
+                    
+                    if shouldRemovePickedName {
+                        names.removeAll { name in
+                            return (name == randomName)
+                        }
                     }
+                } else {
+                    pickedName = ""
                 }
-                .disabled(numberOfDice == 1)
-                .labelStyle(.iconOnly)
-                
-                Button("Add Dice", systemImage: "plus.circle.fill") {
-                    withAnimation {
-                        numberOfDice += 1
-                    }
-                }
-                .disabled(numberOfDice == 5)
-                .labelStyle(.iconOnly)
+            } label: {
+                Text("Pick Random Name")
+                    .padding(.vertical, 8)
+                    .padding(.horizontal, 16)
             }
-            .padding()
-            .font(.title)
+            .buttonStyle(.borderedProminent)
+            .font(.title2)
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.appBackground)
-        .tint(.white)
     }
 }
 
