@@ -6,61 +6,47 @@
 //
 
 import SwiftUI
-
-
-import SwiftUI
-
+import SwiftData
 
 struct ContentView: View {
-    @State private var names: [String] = ["Elisha", "Andre", "Jasmine", "Po-Chun"]
-    @State private var nameToAdd = ""
-    @State private var pickedName = ""
-    @State private var shouldRemovePickedName = false
-    
+    @State private var showImageEditor = false
+
     var body: some View {
-        VStack {
-            Text(pickedName.isEmpty ? "" : pickedName)
-            List {
-                ForEach(names, id: \.description) { name in
-                    Text(name)
-                }
-            }
-            Text(nameToAdd)
-            TextField("Add Name", text: $nameToAdd)
-                .onSubmit {
-                    if !nameToAdd.isEmpty{
-                        names.append(nameToAdd)
-                        nameToAdd = ""
+        NavigationStack {
+            VStack(spacing: 50) {
+                Text("画像編集アプリ")
+                    .font(.largeTitle)
+                    .bold()
+                
+                Button(action: {
+                    showImageEditor = true
+                }) {
+                    VStack(spacing: 15) {
+                        Image(systemName: "photo.badge.plus")
+                            .font(.system(size: 60))
+                        Text("画像編集を開始")
+                            .font(.headline)
                     }
+                    .padding(30)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
                 }
-            
-            Toggle("Remove when picked", isOn: $shouldRemovePickedName)
-            
-            Button {
-                if let randomName = names.randomElement() {
-                    pickedName = randomName
-                    
-                    if shouldRemovePickedName {
-                        names.removeAll { name in
-                            return (name == randomName)
-                        }
-                    }
-                } else {
-                    pickedName = ""
-                }
-            } label: {
-                Text("Pick Random Name")
-                    .padding(.vertical, 8)
-                    .padding(.horizontal, 16)
+                
+                Spacer()
             }
-            .buttonStyle(.borderedProminent)
-            .font(.title2)
+            .padding()
+            .navigationTitle("ホーム")
+            .fullScreenCover(isPresented: $showImageEditor) {
+                ImageSelectionView()
+            }
         }
-        .padding()
     }
 }
 
-
 #Preview {
     ContentView()
+        .modelContainer(for: EditedImageModel.self, inMemory: true)
 }
+
+

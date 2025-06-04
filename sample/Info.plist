@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string></string>
+	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>この画像編集アプリは、編集した画像をフォトライブラリに保存するためにアクセス権限を必要とします。</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>この画像編集アプリは、画像を選択・編集するためにフォトライブラリへのアクセス権限を必要とします。</string>
+</dict>
+</plist>
